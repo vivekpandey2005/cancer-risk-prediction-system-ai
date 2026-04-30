@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>About Page</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #0f172a, #1e293b);
+            color: white;
+            text-align: center;
+            overflow-x: hidden;
+        }
+
+        /* HEADER */
+        .header {
+            padding: 60px 20px;
+            animation: fadeDown 1s ease;
+        }
+
+        .header h1 {
+            font-size: 42px;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: #cbd5e1;
+        }
+
+        @keyframes fadeDown {
+            from {
+                opacity: 0;
+                transform: translateY(-40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* IMAGE SECTION */
+        .img-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .img-box {
+            width: 260px;
+            height: 170px;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+            transition: 0.3s;
+            animation: pop 1s ease;
+        }
+
+        .img-box:nth-child(2) { animation-delay: 0.2s; }
+        .img-box:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes pop {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .img-box:hover {
+            transform: scale(1.05);
+        }
+
+        .img-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* BOXES */
+        .box-container {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            flex-wrap: wrap;
+            margin-top: 40px;
+            padding: 20px;
+        }
+
+        .box {
+            width: 280px;
+            padding: 25px;
+            border-radius: 18px;
+
+            background: rgba(255,255,255,0.08);
+            backdrop-filter: blur(10px);
+
+            border: 1px solid rgba(255,255,255,0.1);
+
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+
+            transition: 0.4s ease;
+        }
+
+        .box:hover {
+            transform: translateY(-12px);
+            background: rgba(255,255,255,0.15);
+        }
+
+        .box h2 {
+            margin-bottom: 10px;
+            color: #38bdf8;
+        }
+
+        .box p {
+            font-size: 14px;
+            color: #e2e8f0;
+            line-height: 1.6;
+        }
+
+        /* BUTTON */
+        .btn {
+            display: inline-block;
+            margin-top: 40px;
+            padding: 12px 25px;
+            background: linear-gradient(90deg, #38bdf8, #0ea5e9);
+            color: black;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .btn:hover {
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <div class="header">
+        <h1>About Us</h1>
+        <p>We build modern web applications using Flask & Web Technologies 🚀</p>
+    </div>
+
+    <!-- IMAGES -->
+    <div class="img-container">
+
+        <div class="img-box">
+            <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=80">
+        </div>
+
+        <div class="img-box">
+            <img src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=800&q=80">
+        </div>
+
+        <div class="img-box">
+            <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800&q=80">
+        </div>
+
+    </div>
+
+    <!-- BOXES -->
+    <div class="box-container">
+
+        <div class="box">
+            <h2>💡 Our Idea</h2>
+            <p>
+                We started this project to learn full-stack development using Flask, HTML, CSS, and JavaScript.
+                It helps us understand real-world application structure.
+            </p>
+        </div>
+
+        <div class="box">
+            <h2>🛠️ What We Build</h2>
+            <p>
+                We build simple but effective web applications like feedback systems,
+                mini projects, and learning-based tools.
+            </p>
+        </div>
+
+        <div class="box">
+            <h2>🎯 Our Goal</h2>
+            <p>
+                Our goal is to become strong full-stack developers by practicing projects,
+                improving UI design, and learning backend logic step by step.
+            </p>
+        </div>
+
+    </div>
+
+    <!-- BUTTON -->
+    <a class="btn" href="/">Go Home</a>
+
+</body>
+</html>
