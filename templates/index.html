@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+.nav-bar {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.nav-bar a {
+    padding: 10px 15px;
+    background: blue;
+    color: white;
+    text-decoration: none;
+    border-radius: 10px;
+}
+</style>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Cancer Dashboard</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+
+<style>
+body { background:#050505; color:white; font-family:sans-serif; }
+
+.card {
+    background: rgba(30,41,59,0.9);
+    padding:20px;
+    border-radius:25px;
+    border:1px solid #334155;
+    cursor:pointer;
+}
+
+.popup{
+    position:fixed;
+    top:0;left:0;
+    width:100%;height:100%;
+    background:rgba(0,0,0,0.7);
+    display:none;
+    justify-content:center;
+    align-items:center;
+}
+
+.popup-content{
+    background:#0f172a;
+    padding:25px;
+    border-radius:20px;
+    width:320px;
+}
+
+
+
+
+
+
+
+/* 🧬 SAFE AI + CANCER BACKGROUND LAYER (NO EXISTING CODE CHANGED) */
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+    background: url("https://images.unsplash.com/photo-1579154204601-01588f351e67?auto=format&fit=crop&w=1600&q=80");
+    background-size: cover;
+    background-position: center;
+
+    z-index: -2;
+}
+
+/* 🌑 DARK MEDICAL AI OVERLAY */
+body::after {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    
+    background: radial-gradient(circle at center, rgba(0,255,180,0.12), transparent 60%),
+                rgba(0,0,0,0.75);
+
+    z-index: -1;
+}
+
+
+
+
+</style>
+</head>
+
+<body class="flex flex-col md:flex-row">
+
+<aside class="w-full md:w-[230px] bg-slate-900 p-4 md:p-6 space-y-3">
+
+    <h1 class="font-bold text-lg mb-4">🏠 Dashboard</h1>
+
+    <a href="/" class="block p-2 hover:bg-slate-800 rounded">🏠 Home</a>
+    <a href="/statistics" class="block p-2 hover:bg-slate-800 rounded">📊 Statistics</a>
+    <a href="{{ url_for('precautions') }}" class="block p-2 hover:bg-slate-800 rounded">⚠️ Precautions</a>
+    <a href="{{ url_for('cure') }}" class="block p-2 hover:bg-slate-800 rounded">💊 Cure</a>
+    <a href="/chatbot" class="block p-2 hover:bg-slate-800 rounded">🤖 Chatbot</a>
+    <a href="/about" class="block p-2 hover:bg-slate-800 rounded">ℹ️ About</a>
+    <a href="/feedback" class="block p-2 hover:bg-slate-800 rounded">📝 Feedback</a>
+
+</aside>
+
+<main class="flex-1 p-3 md:p-6">
+
+<h1 class="text-3xl font-bold mb-4">AI Cancer Prediction</h1>
+
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+<div class="card">
+<h2 class="font-extrabold text-lg">🧾 Patient Data</h2>
+
+<input id="name" placeholder="Enter Patient Name" class="w-full p-2 mt-2 bg-slate-950 rounded">
+<input id="age" type="number" placeholder="Enter Age" class="w-full p-2 mt-2 bg-slate-950 rounded">
+
+<select id="smoking" class="w-full p-2 mt-2 bg-slate-950 rounded">
+<option value="" disabled selected>Smoking</option>
+<option value="1">Yes</option>
+<option value="0">No</option>
+</select>
+
+<select id="family" class="w-full p-2 mt-2 bg-slate-950 rounded">
+<option value="" disabled selected>Family History</option>
+<option value="1">Yes</option>
+<option value="0">No</option>
+</select>
+
+<button onclick="predictCancer()" class="w-full mt-3 bg-purple-600 p-2 rounded">
+Predict Risk
+</button>
+</div>
+
+<div id="resultCard" class="card border border-gray-600">
+<h2 class="font-extrabold text-lg mb-4">📊 Prediction Result</h2>
+
+<h2 id="resultText" class="text-3xl font-black mb-5">Awaiting Data...</h2>
+
+<p id="aiText" class="text-slate-300 mb-5"></p>
+
+<div class="w-full h-4 bg-gray-700 rounded-full overflow-hidden mb-4">
+<div id="riskFill" style="width:0%; height:100%; background:linear-gradient(to right, lime, yellow, red);"></div>
+</div>
+
+<p id="riskPercent" class="font-bold text-lg"></p>
+</div>
+
+</div>
+
+<div class="grid grid-cols-2 gap-4 mt-6">
+
+
+
+<div class="grid grid-cols-2 gap-4 mt-6">
+
+<div class="card" onclick="toggleCard(this)">
+🚭 Smoking Cessation
+<div class="details hidden text-sm text-gray-300 mt-2">
+• Causes lung cancer<br>
+• Damages heart and lungs<br>
+• Reduces oxygen level<br>
+• Weakens immunity<br>
+• Increases infection risk<br>
+• Quitting improves health fast
+</div>
+</div>
+
+<div class="card" onclick="toggleCard(this)">
+🥗 Healthy Diet
+<div class="details hidden text-sm text-gray-300 mt-2">
+• Eat fruits and vegetables<br>
+• Avoid junk food<br>
+• Reduce sugar intake<br>
+• Drink water daily<br>
+• Balanced nutrition<br>
+• Improves immunity
+</div>
+</div>
+
+<div class="card" onclick="toggleCard(this)">
+🧠 Understanding Cancer
+<div class="details hidden text-sm text-gray-300 mt-2">
+• Abnormal cell growth<br>
+• Can spread in body<br>
+• Early detection helps<br>
+• Lifestyle matters<br>
+• Genetic factors involved<br>
+• Regular checkups needed
+</div>
+</div>
+
+<div class="card" onclick="toggleCard(this)">
+🏃 Physical Activity
+<div class="details hidden text-sm text-gray-300 mt-2">
+• Improves immunity<br>
+• Reduces cancer risk<br>
+• Controls weight<br>
+• Improves heart health<br>
+• Boosts energy<br>
+• Daily exercise needed
+</div>
+</div>
+
+<div class="card" onclick="toggleCard(this)">
+🧘 Stress Management
+<div class="details hidden text-sm text-gray-300 mt-2">
+• Causes health issues<br>
+• Affects immunity<br>
+• Meditation helps<br>
+• Proper sleep needed<br>
+• Avoid overthinking<br>
+• Balance life
+</div>
+</div>
+
+<div class="card" onclick="toggleCard(this)">
+🤝 Care & Support
+<div class="details hidden text-sm text-gray-300 mt-2">
+• Emotional support important<br>
+• Family care helps recovery<br>
+• Doctor follow-up needed<br>
+• Stay positive<br>
+• Mental health matters<br>
+• Proper treatment required
+</div>
+</div>
+
+</div>
+
+<div id="popup" class="popup">
+<div class="popup-content">
+<p id="popupText"></p>
+<button onclick="closePopup()" class="mt-3 bg-red-500 px-3 py-1 rounded">Close</button>
+</div>
+</div>
+
+<div class="card mt-6">
+<h2 class="font-extrabold text-lg">📄 Report Analyzer</h2>
+
+<textarea id="report" placeholder="Paste your report..." class="w-full p-2 mt-2 bg-slate-950 rounded"></textarea>
+<input type="file" class="mt-2">
+<button onclick="analyzeReport()" class="w-full mt-2 bg-purple-600 p-2 rounded">Analyze</button>
+
+<p id="reportResult" class="mt-3"></p>
+</div>
+
+<div class="card mt-6">
+<h2 class="font-extrabold text-lg">🏥 Nearby Cancer Care</h2>
+
+<select id="state" onchange="updateCities()" class="w-full p-2 mt-2 bg-slate-950 rounded"></select>
+<select id="city" class="w-full p-2 mt-2 bg-slate-950 rounded"><option>Select City</option></select>
+
+<button onclick="showHospital()" class="w-full mt-2 bg-purple-600 p-2 rounded">Find Nearby Hospital</button>
+
+<div id="hospital" class="mt-3"></div>
+</div>
+
+<div class="card mt-6">
+<h2 class="font-extrabold text-lg">📋 Recent Predictions</h2>
+
+<table class="w-full mt-3 text-center text-sm">
+<thead>
+<tr><th>Name</th><th>Age</th><th>Smoking</th><th>Family</th><th>Result</th><th>Date</th></tr>
+</thead>
+<tbody id="tableBody"></tbody>
+</table>
+</div>
+
+</main>
+
+<script>
+
+// ✅ 28 STATES + CITIES
+const cities = {
+"Andhra Pradesh": ["Visakhapatnam","Vijayawada","Guntur","Tirupati"],
+"Arunachal Pradesh": ["Itanagar","Tawang"],
+"Assam": ["Guwahati","Dibrugarh","Silchar"],
+"Bihar": ["Patna","Gaya","Bhagalpur"],
+"Chhattisgarh": ["Raipur","Bhilai","Bilaspur"],
+"Goa": ["Panaji","Margao"],
+"Gujarat": ["Ahmedabad","Surat","Vadodara","Rajkot"],
+"Haryana": ["Gurgaon","Faridabad","Panipat"],
+"Himachal Pradesh": ["Shimla","Dharamshala"],
+"Jharkhand": ["Ranchi","Jamshedpur","Dhanbad"],
+"Karnataka": ["Bangalore","Mysore","Mangalore"],
+"Kerala": ["Kochi","Thiruvananthapuram","Kozhikode"],
+"Madhya Pradesh": ["Bhopal","Indore","Jabalpur","Gwalior"],
+"Maharashtra": ["Mumbai","Pune","Nagpur","Nashik"],
+"Manipur": ["Imphal"],
+"Meghalaya": ["Shillong"],
+"Mizoram": ["Aizawl"],
+"Nagaland": ["Kohima","Dimapur"],
+"Odisha": ["Bhubaneswar","Cuttack","Rourkela"],
+"Punjab": ["Amritsar","Ludhiana","Chandigarh"],
+"Rajasthan": ["Jaipur","Jodhpur","Udaipur"],
+"Sikkim": ["Gangtok"],
+"Tamil Nadu": ["Chennai","Coimbatore","Madurai"],
+"Telangana": ["Hyderabad","Warangal"],
+"Tripura": ["Agartala"],
+"Uttar Pradesh": ["Lucknow","Kanpur","Varanasi","Noida"],
+"Uttarakhand": ["Dehradun","Haridwar"],
+"West Bengal": ["Kolkata","Siliguri","Durgapur"]
+};
+
+window.onload=function(){
+let s=document.getElementById("state");
+for(let i in cities){ s.innerHTML+=`<option>${i}</option>`;}
+};
+
+function updateCities(){
+let s=document.getElementById("state").value;
+let c=document.getElementById("city");
+c.innerHTML="<option>Select City</option>";
+cities[s].forEach(x=>c.innerHTML+=`<option>${x}</option>`);
+}
+
+function predictCancer(){
+
+let resultText = document.getElementById("resultText");
+let aiText = document.getElementById("aiText");
+let riskFill = document.getElementById("riskFill");
+let riskPercent = document.getElementById("riskPercent");
+let tableBody = document.getElementById("tableBody");
+
+let name=document.getElementById("name").value;
+let age=Number(document.getElementById("age").value);
+let smoking=document.getElementById("smoking").value;
+let family=document.getElementById("family").value;
+
+if(age<=0){ alert("Enter valid age"); return; }
+
+let risk=0, ai=[];
+if(age>40){risk++; ai.push("Age factor");}
+if(smoking=="1"){risk++; ai.push("Smoking");}
+if(family=="1"){risk++; ai.push("Family history");}
+
+let percent=risk*30;
+
+if(risk>=2){
+resultText.innerText="HIGH RISK ⚠️";
+resultText.className="text-red-500 text-5xl font-black mb-5";
+}else{
+resultText.innerText="LOW RISK ✅";
+resultText.className="text-green-400 text-5xl font-black mb-5";
+}
+
+aiText.innerText="AI Explanation: "+ai.join(", ");
+riskFill.style.width=percent+"%";
+riskPercent.innerText="Risk: "+percent+"%";
+
+tableBody.innerHTML+=`<tr><td>${name}</td><td>${age}</td><td>${smoking}</td><td>${family}</td><td>${risk>=2?"High":"Low"}</td><td>${new Date().toLocaleString()}</td></tr>`;
+}
+
+function showPopup(type){
+document.getElementById("popup").style.display="flex";
+document.getElementById("popupText").innerText=type;
+}
+
+function closePopup(){
+document.getElementById("popup").style.display="none";
+}
+
+function analyzeReport(){
+let t=document.getElementById("report").value.toLowerCase();
+let reportResult=document.getElementById("reportResult");
+
+if(t.includes("cancer")) reportResult.innerText="Possible Cancer ⚠️";
+else reportResult.innerText="Normal Report ✅";
+}
+
+
+function showHospital(){
+let city=document.getElementById("city").value;
+
+document.getElementById("hospital").innerHTML = `
+<div class="bg-slate-800 p-4 rounded flex justify-between items-center">
+
+    <!-- LEFT SIDE (LOCATION) -->
+    <div>
+        <p class="font-bold text-lg">🏥 Cancer Care in ${city}</p>
+        <a href="https://www.google.com/maps/search/${city}+cancer+hospital" target="_blank" class="text-blue-400">
+            📍 View Location
+        </a>
+    </div>
+
+    <!-- RIGHT SIDE (EMERGENCY) -->
+    <div class="text-right">
+<p class="text-red-400 font-bold text-xl">
+    🚑 <a href="tel:108" style="color:inherit; text-decoration:none;">108</a>
+</p>
+<p class="text-sm text-gray-300">Tap to Call Emergency</p>
+    </div>
+
+</div>
+`;
+}
+
+
+
+
+function toggleCard(card) {
+    let details = card.querySelector(".details");
+
+    if (details.style.display === "block") {
+        details.style.display = "none";
+    } else {
+        details.style.display = "block";
+    }
+}
+</script>
+
+</body>
+</html>
