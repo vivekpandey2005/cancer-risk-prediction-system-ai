@@ -1,0 +1,8 @@
+flask
+gunicorn
+openai
+flask-cors
+PyPDF2
+numpy
+pandas
+scikit-learn
