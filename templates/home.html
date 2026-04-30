@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>AI Doctor Home</title>
+
+<style>
+/* 🌍 FULL SCREEN SETUP */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+}
+
+/* 🌌 PROFESSIONAL AI + MEDICAL BACKGROUND */
+.background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+    background: url("https://images.unsplash.com/photo-1584982751601-97dcc096659c?auto=format&fit=crop&w=1600&q=80")
+    center/cover no-repeat;
+
+    z-index: -2;
+}
+
+/* DARK OVERLAY FOR PROFESSIONAL LOOK */
+.background::after {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.7);
+}
+
+/* ✨ LOGIN SUCCESS MESSAGE */
+.message {
+    color: #00e5ff;
+    text-align: center;
+    font-size: 28px;
+    margin-top: 120px;
+    animation: popIn 1.5s ease-in-out;
+}
+
+/* MAIN TITLE */
+.title {
+    color: white;
+    text-align: center;
+    font-size: 42px;
+    margin-top: 20px;
+    animation: fadeIn 2s ease-in-out;
+}
+
+/* SUBTITLE */
+.subtitle {
+    color: #ccc;
+    text-align: center;
+    font-size: 18px;
+    animation: fadeIn 3s ease-in-out;
+}
+
+/* ANIMATIONS */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes popIn {
+    0% { opacity: 0; transform: scale(0.8); }
+    100% { opacity: 1; transform: scale(1); }
+}
+
+/* 🔘 BUTTON (BOTTOM CENTER) */
+.btn {
+    position: fixed;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+
+    padding: 15px 35px;
+    border: none;
+    border-radius: 30px;
+
+    background: linear-gradient(135deg, #00e5ff, #0077ff);
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+
+    cursor: pointer;
+    transition: 0.3s;
+
+    box-shadow: 0 0 25px rgba(0, 229, 255, 0.6);
+}
+
+.btn:hover {
+    transform: translateX(-50%) scale(1.1);
+    box-shadow: 0 0 35px rgba(0, 229, 255, 0.9);
+}
+</style>
+</head>
+
+<body>
+
+<div class="background"></div>
+
+<!-- ✅ LOGIN SUCCESS MESSAGE -->
+<div class="message">
+    Heyy you logged in successfully 🎉
+</div>
+
+<h1 class="title">🏥 AI Doctor System</h1>
+<p class="subtitle">Advanced Healthcare powered by Artificial Intelligence</p>
+
+<!-- 🔘 BUTTON -->
+<button class="btn" onclick="window.location.href='/main'">
+    Go to Main Website
+</button>
+
+</body>
+</html>
