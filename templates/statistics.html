@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Statistics</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body class="bg-slate-950 text-white p-6">
+
+<h1 class="text-3xl font-bold mb-6">📊 Analysis Statistics</h1>
+
+<!-- TOP CARDS -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+
+    <!-- TOTAL SCANS -->
+    <div class="bg-slate-800 p-4 rounded-xl">
+        <p>Total Scans</p>
+        <h2 class="text-2xl font-bold" id="total">0</h2>
+    </div>
+
+    <!-- HIGH RISK RATE -->
+    <div class="bg-slate-800 p-4 rounded-xl">
+        <p>High Risk Rate</p>
+        <h2 class="text-2xl font-bold text-red-400" id="risk">0%</h2>
+    </div>
+
+    <!-- LOW RISK RATE -->
+    <div class="bg-slate-800 p-4 rounded-xl">
+        <p>Low Risk Rate</p>
+        <h2 class="text-2xl font-bold text-green-400" id="lowRisk">0%</h2>
+    </div>
+
+</div>
+
+<!-- CHARTS -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+    <!-- BAR CHART -->
+    <div class="bg-slate-800 p-4 rounded-xl">
+        <h2 class="mb-2">Risk Factor Impact</h2>
+        <canvas id="barChart"></canvas>
+    </div>
+
+    <!-- PIE CHART -->
+    <div class="bg-slate-800 p-4 rounded-xl">
+        <h2 class="mb-2">Risk Distribution</h2>
+        <canvas id="pieChart"></canvas>
+    </div>
+
+</div>
+
+<!-- HOME BUTTON -->
+<div class="text-center mt-8">
+    <a href="/" class="bg-blue-600 px-6 py-2 rounded-lg">
+        🏠 Go Home
+    </a>
+</div>
+
+<script>
+
+// GET DATA
+let data = JSON.parse(localStorage.getItem("feedbacks") || "[]");
+
+// DEMO DATA IF EMPTY
+if(data.length === 0){
+    data = [
+        {rating:5},
+        {rating:4},
+        {rating:3},
+        {rating:2},
+        {rating:1}
+    ];
+}
+
+// CALCULATIONS
+let total = data.length;
+let high = data.filter(x => x.rating <= 2).length;
+let low = data.filter(x => x.rating >= 3).length;
+
+// DISPLAY
+document.getElementById("total").innerText = total;
+document.getElementById("risk").innerText = total ? Math.round((high/total)*100) + "%" : "0%";
+document.getElementById("lowRisk").innerText = total ? Math.round((low/total)*100) + "%" : "0%";
+
+// BAR CHART (NO DISAPPEAR BUG)
+new Chart(document.getElementById("barChart"), {
+    type: "bar",
+    data: {
+        labels: ["Low Risk", "High Risk"],
+        datasets: [{
+            label: "Users",
+            data: [total - high, high]
+        }]
+    },
+    options: {
+        plugins: {
+            legend: {
+                onClick: () => {}
+            }
+        }
+    }
+});
+
+// PIE CHART (NO DISAPPEAR BUG)
+new Chart(document.getElementById("pieChart"), {
+    type: "doughnut",
+    data: {
+        labels: ["Low Risk", "High Risk"],
+        datasets: [{
+            data: [total - high, high]
+        }]
+    },
+    options: {
+        plugins: {
+            legend: {
+                onClick: () => {}
+            }
+        }
+    }
+});
+
+</script>
+
+</body>
+</html>``
